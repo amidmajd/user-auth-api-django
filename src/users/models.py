@@ -4,14 +4,15 @@ from django.core.validators import RegexValidator
 
 
 GENDER_CHOICES = (
-    ('M', 'Male'),
-    ('F', 'Female'),
+    ('Male', 'Male'),
+    ('Female', 'Female'),
 )
 
 
 class User(AbstractUser):
-    email = models.EmailField(max_length=255, unique=True)
-    username = None
+    email = models.EmailField(max_length=255, unique=True)  # email is our user identifier
+    username = None                                         # no username
+    password = models.CharField(max_length=128)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     birthday = models.DateField()
