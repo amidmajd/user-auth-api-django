@@ -4,7 +4,7 @@ from rest_framework import response
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
-from .serializers import UserSerializer
+from .serializers import UserSerializer, UserEssentialsSerializer
 from .models import User
 import jwt
 import datetime
@@ -94,7 +94,7 @@ class UsersView(APIView):
             raise AuthenticationFailed('Unauthenticated')
 
         users = User.objects.all()
-        serialized_users = UserSerializer(users, many=True)
+        serialized_users = UserEssentialsSerializer(users, many=True)
 
         response = Response()
         response.data = {
