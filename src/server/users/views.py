@@ -15,7 +15,13 @@ class RegisterView(APIView):
         serialized_user = UserSerializer(data=request.data)
         serialized_user.is_valid(raise_exception=True)
         serialized_user.save()
-        return Response(serialized_user.data)
+
+        response = Response()
+        response.data = {
+            'message': 'success',
+            'data': serialized_user.data
+        }
+        return response
 
 
 class LoginView(APIView):
@@ -66,7 +72,13 @@ class UserView(APIView):
 
         user = User.objects.filter(id=payload['id']).first()
         serialized_user = UserSerializer(user)
-        return Response(serialized_user.data)
+
+        response = Response()
+        response.data = {
+            'message': 'success',
+            'data': serialized_user.data
+        }
+        return response
 
 
 class UsersView(APIView):
@@ -83,4 +95,10 @@ class UsersView(APIView):
 
         users = User.objects.all()
         serialized_users = UserSerializer(users, many=True)
-        return Response(serialized_users.data)
+
+        response = Response()
+        response.data = {
+            'message': 'success',
+            'data': serialized_users.data
+        }
+        return response
