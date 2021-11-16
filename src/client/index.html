@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HomePage</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="navbar">
+        <a href="#" class="btn" id="btn-login">login</a>
+        <a href="#" class="btn" id="btn-register">sign up</a>
+        <a href="#" class="btn" id="btn-logout">logout</a>
+        <a href="#" class="btn" id="btn-editUser">edit user info</a>
+        <a href="#" class="btn" id="btn-viewUserInfo">view user info</a>
+        <a href="#" class="btn" id="btn-viewAllUsers">view registered users</a>
+      </div>
+    </header>
+    <main class="main">
+      <div class="message-box">
+        <h2 class="message-box" id="message-box"></h2>
+      </div>
+
+      <section class="register">
+        <form class="form" id="form-register">
+          <label for="form-register__email">Email</label>
+          <input type="text" id="form-register__email" name="email" />
+          <label for="form-register__fname">First Name</label>
+          <input type="text" id="form-register__fname" name="first_name" />
+          <label for="form-register__lname">Last Name</label>
+          <input type="text" id="form-register__lname" name="last_name" />
+          <label for="form-register__password">Password</label>
+          <input type="password" id="form-register__password" name="password" />
+          <label for="form-register__bday">Birthday</label>
+          <input type="text" id="form-register__bday" name="birthday" />
+          <label for="form-register__phone">Phone Number</label>
+          <input type="text" id="form-register__phone" name="phone_number" />
+          <label for="form-register__address">Address</label>
+          <input type="text" id="form-register__address" name="address" />
+          <label for="form-register__gender">Gender</label>
+          <select id="form-register__gender" name="gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+
+          <a href="#" class="btn" id="form-register__btn">Register</a>
+        </form>
+      </section>
+
+      <section class="login">
+        <form class="form" id="form-login">
+          <label for="form-login__email">Email</label>
+          <input type="text" id="form-login__email" name="email" />
+          <label for="form-login__password">Password</label>
+          <input type="password" id="form-login__password" name="password" />
+
+          <a href="#" class="btn" id="form-login__btn">Login</a>
+        </form>
+      </section>
+
+      <section class="edit-user"></section>
+
+      <section class="user-info"></section>
+
+      <section class="all-users"></section>
+    </main>
+  </body>
+
+  <script src="./script.js"></script>
+</html>
