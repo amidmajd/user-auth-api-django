@@ -13,6 +13,12 @@ var loginForm = document.getElementById("form-login");
 
 var logoutBtn = document.getElementById("btn-logout");
 
+var editBtn = document.getElementById("btn-editUser");
+var formEditBtn = document.getElementById("form-edit__btn");
+var editForm = document.getElementById("form-edit");
+
+let CURRENT_USER_ID = undefined;
+
 // Logic
 registerBtn.addEventListener("click", (e) => {
   fetch(BASE_URL + "/user/register", {
@@ -22,8 +28,8 @@ registerBtn.addEventListener("click", (e) => {
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
-      registerForm.reset();
 
+      registerForm.reset();
       messageBox.innerHTML = "Register Successful!";
       setTimeout(() => {
         messageBox.innerHTML = "";
@@ -34,15 +40,16 @@ registerBtn.addEventListener("click", (e) => {
 loginBtn.addEventListener("click", (e) => {
   fetch(BASE_URL + "/user/login", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email: "amidmajd@gmail.com", password: "amidmajd" }),
+    body: new FormData(loginForm),
     credentials: "include",
   })
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
-      loginForm.reset();
 
+      CURRENT_USER_ID = data.data.id;
+
+      loginForm.reset();
       messageBox.innerHTML = "Login Successful!";
       setTimeout(() => {
         messageBox.innerHTML = "";
@@ -91,7 +98,46 @@ logoutBtn.addEventListener("click", (e) => {
     .then((data) => {
       console.log(data);
 
+      CURRENT_USER_ID = undefined;
+
       messageBox.innerHTML = "Logged Out!";
+      setTimeout(() => {
+        messageBox.innerHTML = "";
+      }, 3000);
+    });
+});
+
+editBtn.addEventListener("click", (e) => {
+  fetch(BASE_URL + "/user/user", {
+    method: "GET",
+    credentials: "include",
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+
+      CURRENT_USER_ID = data.data.id;
+
+      const { elements } = editForm;
+      for (const [key, value] of Object.entries(data.data)) {
+        const field = elements.namedItem(key);
+        field && (field.value = value);
+      }
+    });
+});
+
+formEditBtn.addEventListener("click", (e) => {
+  fetch(BASE_URL + "/user/update/" + CURRENT_USER_ID, {
+    method: "PUT",
+    body: new FormData(editForm),
+    credentials: "include",
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+
+      editForm.reset();
+      messageBox.innerHTML = "Edit Successful!";
       setTimeout(() => {
         messageBox.innerHTML = "";
       }, 3000);
