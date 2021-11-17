@@ -30,5 +30,5 @@ class UserEssentialsSerializer(serializers.ModelSerializer):
         model = User
         # serializer data fields
         fields = [
-            'id', 'email', 'first_name', 'last_name'
+            'id', 'email', 'first_name', 'last_name', 'phone_number', 'gender'
         ]
