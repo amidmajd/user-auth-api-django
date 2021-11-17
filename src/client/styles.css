@@ -1,0 +1,36 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  border: 1px solid black;
+  padding: 20px;
+}
+
+.message-box {
+  margin: 10px auto;
+  width: fit-content;
+  border: 1px solid rgba(35, 35, 201, 0.664);
+  border-radius: 10px;
+  padding: 5px;
+}
+
+form {
+  width: fit-content;
+  margin: 0 auto;
+  text-align: center;
+}
+
+form > input {
+  display: inline-block;
+  margin-bottom: 10px;
+  margin-right: 20px;
+}
+
+form > .btn {
+  margin-top: 20px;
+}

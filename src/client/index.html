@@ -5,25 +5,32 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HomePage</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <header class="header">
       <div class="navbar">
-        <a href="#" class="btn" id="btn-login">login</a>
-        <a href="#" class="btn" id="btn-register">sign up</a>
-        <a href="#" class="btn" id="btn-logout">logout</a>
-        <a href="#" class="btn" id="btn-editUser">edit user info</a>
-        <a href="#" class="btn" id="btn-viewUserInfo">view user info</a>
-        <a href="#" class="btn" id="btn-viewAllUsers">view registered users</a>
+        <a href="#" class="btn btn-primary" id="btn-login">login</a>
+        <a href="#" class="btn btn-primary" id="btn-register">sign up</a>
+        <a href="#" class="btn btn-primary" id="btn-logout">logout</a>
+        <a href="#" class="btn btn-primary" id="btn-editUser">edit user info</a>
+        <a href="#" class="btn btn-primary" id="btn-viewUserInfo">view user info</a>
+        <a href="#" class="btn btn-primary" id="btn-viewAllUsers">view registered users</a>
       </div>
     </header>
     <main class="main">
-      <div class="message-box">
+      <div>
         <h2 class="message-box" id="message-box"></h2>
       </div>
 
-      <section class="register">
+      <section class="register container">
         <form class="form" id="form-register">
           <label for="form-register__email">Email</label>
           <input type="text" id="form-register__email" name="email" />
@@ -44,23 +51,23 @@
             <option value="Male">Male</option>
             <option value="Female">Female</option>
           </select>
-
-          <a href="#" class="btn" id="form-register__btn">Register</a>
+          <br />
+          <a href="#" class="btn btn-primary" id="form-register__btn">Register</a>
         </form>
       </section>
 
-      <section class="login">
+      <section class="login container">
         <form class="form" id="form-login">
           <label for="form-login__email">Email</label>
           <input type="text" id="form-login__email" name="email" />
           <label for="form-login__password">Password</label>
           <input type="password" id="form-login__password" name="password" />
-
-          <a href="#" class="btn" id="form-login__btn">Login</a>
+          <br />
+          <a href="#" class="btn btn-primary" id="form-login__btn">Login</a>
         </form>
       </section>
 
-      <section class="edit-user">
+      <section class="edit-user container">
         <form class="form" id="form-edit">
           <label for="form-edit__email">Email</label>
           <input type="text" id="form-edit__email" name="email" />
@@ -79,14 +86,31 @@
             <option value="Male">Male</option>
             <option value="Female">Female</option>
           </select>
-
-          <a href="#" class="btn" id="form-edit__btn">Save</a>
+          <br />
+          <a href="#" class="btn btn-primary" id="form-edit__btn">Save</a>
         </form>
       </section>
 
-      <section class="user-info"></section>
+      <section class="user-info container"></section>
 
-      <section class="all-users"></section>
+      <section class="all-users container">
+        <div>
+          <p id="table-body-all-users"></p>
+        </div>
+        <!-- <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Email</th>
+              <th scope="col">First Name</th>
+              <th scope="col">Last Name</th>
+              <th scope="col">Phone</th>
+              <th scope="col">Gender</th>
+            </tr>
+          </thead>
+          <tbody id="table-body-all-users"></tbody>
+        </table> -->
+      </section>
     </main>
   </body>
 
