@@ -24,11 +24,17 @@ class RegisterView(APIView):
 
 
 class LoginView(APIView):
+    def get_object(self, email):
+        try:
+            return User.objects.get(email=email)
+        except User.DoesNotExist:
+            raise Http404
+
     def post(self, request):
         email = request.data['email']
         password = request.data['password']
 
-        user = User.objects.filter(email=email).first()
+        user = self.get_object(email)
 
         if user is None:
             raise AuthenticationFailed('User not found!')
@@ -45,7 +51,7 @@ class LoginView(APIView):
 
         response = Response()
         response.set_cookie(key='jwt', value=token, httponly=True, samesite="None", secure=True)
-        response.data = {'message': 'success'}
+        response.data = {'message': 'success', 'data': {'id': user.id}}
         return response
 
 
@@ -58,6 +64,12 @@ class LogoutView(APIView):
 
 
 class UserView(APIView):
+    def get_object(self, id):
+        try:
+            return User.objects.get(id=id)
+        except User.DoesNotExist:
+            raise Http404
+
     def get(self, request):
         token = request.COOKIES.get('jwt')
 
@@ -69,7 +81,7 @@ class UserView(APIView):
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed('Unauthenticated')
 
-        user = User.objects.filter(id=payload['id']).first()
+        user = self.get_object(payload['id'])
         serialized_user = UserSerializer(user)
 
         response = Response()
@@ -104,13 +116,13 @@ class UsersView(APIView):
 
 
 class UpdateView(APIView):
-    def get_object(self, pk):
+    def get_object(self, id):
         try:
-            return User.objects.get(pk=pk)
+            return User.objects.get(id=id)
         except User.DoesNotExist:
             raise Http404
 
-    def put(self, request, pk, format=None):
+    def put(self, request, id, format=None):
         token = request.COOKIES.get('jwt')
         if not token:
             raise AuthenticationFailed('Unauthenticated')
@@ -120,12 +132,12 @@ class UpdateView(APIView):
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed('Unauthenticated')
 
-        user = self.get_object(pk)
+        user = self.get_object(id)
 
         if payload['id'] != user.id:
             raise AuthenticationFailed('Unauthorized! You can only edit your info')
 
-        serialized_user = UserSerializer(user, data=request.data)
+        serialized_user = UserSerializer(user, data=request.data, partial=True)
         serialized_user.is_valid(raise_exception=True)
         serialized_user.save()
 
