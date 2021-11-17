@@ -1,6 +1,5 @@
 from django.conf import settings
-from rest_framework import serializers
-from rest_framework import response
+from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
@@ -100,5 +99,39 @@ class UsersView(APIView):
         response.data = {
             'message': 'success',
             'data': serialized_users.data
+        }
+        return response
+
+
+class UpdateView(APIView):
+    def get_object(self, pk):
+        try:
+            return User.objects.get(pk=pk)
+        except User.DoesNotExist:
+            raise Http404
+
+    def put(self, request, pk, format=None):
+        token = request.COOKIES.get('jwt')
+        if not token:
+            raise AuthenticationFailed('Unauthenticated')
+
+        try:
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms='HS256')
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed('Unauthenticated')
+
+        user = self.get_object(pk)
+
+        if payload['id'] != user.id:
+            raise AuthenticationFailed('Unauthorized! You can only edit your info')
+
+        serialized_user = UserSerializer(user, data=request.data)
+        serialized_user.is_valid(raise_exception=True)
+        serialized_user.save()
+
+        response = Response()
+        response.data = {
+            'message': 'success',
+            'data': serialized_user.data
         }
         return response
