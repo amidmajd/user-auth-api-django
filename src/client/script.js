@@ -3,7 +3,10 @@ BASE_URL = "http://localhost:8000";
 var messageBox = document.getElementById("message-box");
 
 var viewUserInfoBtn = document.getElementById("btn-viewUserInfo");
+var userInfoForm = document.getElementById("form-user-info");
+
 var viewAllUsersBtn = document.getElementById("btn-viewAllUsers");
+var allUsersTableBody = document.getElementById("all-users-table-body");
 
 var registerBtn = document.getElementById("form-register__btn");
 var registerForm = document.getElementById("form-register");
@@ -66,6 +69,12 @@ viewUserInfoBtn.addEventListener("click", (e) => {
     .then((data) => {
       console.log(data);
 
+      const { elements } = userInfoForm;
+      for (const [key, value] of Object.entries(data.data)) {
+        const field = elements.namedItem(key);
+        field && (field.value = value);
+      }
+
       messageBox.innerHTML = "Fetched User Info!";
       setTimeout(() => {
         messageBox.innerHTML = "";
@@ -81,6 +90,19 @@ viewAllUsersBtn.addEventListener("click", (e) => {
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
+
+      for (const item of data.data) {
+        let tableRow = document.createElement("tr");
+        tableRow.innerHTML = `
+          <th scope="row">${item.id}</th>
+          <td>${item.email}</td>
+          <td>${item.first_name}</td>
+          <td>${item.last_name}</td>
+          <td>${item.phone_number}</td>
+          <td>${item.gender}</td>
+      `;
+        allUsersTableBody.appendChild(tableRow);
+      }
 
       messageBox.innerHTML = "Fetched All Users!";
       setTimeout(() => {
