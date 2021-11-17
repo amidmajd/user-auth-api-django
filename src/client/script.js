@@ -1,99 +1,136 @@
-BASE_URL = "http://localhost:8000";
-
-var messageBox = document.getElementById("message-box");
-
-var viewUserInfoBtn = document.getElementById("btn-viewUserInfo");
-var userInfoForm = document.getElementById("form-user-info");
-
-var viewAllUsersBtn = document.getElementById("btn-viewAllUsers");
-var allUsersTableBody = document.getElementById("all-users-table-body");
-
-var registerBtn = document.getElementById("form-register__btn");
-var registerForm = document.getElementById("form-register");
-
-var loginBtn = document.getElementById("form-login__btn");
-var loginForm = document.getElementById("form-login");
-
-var logoutBtn = document.getElementById("btn-logout");
-
-var editBtn = document.getElementById("btn-editUser");
-var formEditBtn = document.getElementById("form-edit__btn");
-var editForm = document.getElementById("form-edit");
-
+const BASE_URL = "http://localhost:8000";
 let CURRENT_USER_ID = undefined;
 
+let messageBox = document.getElementById("message-box");
+
+let viewUserInfoBtn = document.getElementById("btn-viewUserInfo");
+let userInfoForm = document.getElementById("form-user-info");
+
+let viewAllUsersBtn = document.getElementById("btn-viewAllUsers");
+let allUsersTableBody = document.getElementById("all-users-table-body");
+
+let registerBtn = document.getElementById("form-register__btn");
+let registerForm = document.getElementById("form-register");
+
+let loginBtn = document.getElementById("form-login__btn");
+let loginForm = document.getElementById("form-login");
+
+let logoutBtn = document.getElementById("btn-logout");
+
+let editBtn = document.getElementById("btn-editUser");
+let formEditBtn = document.getElementById("form-edit__btn");
+let editForm = document.getElementById("form-edit");
+
+let messageBoxShow = (message) => {
+  messageBox.innerHTML = message;
+  setTimeout(() => {
+    messageBox.innerHTML = "";
+  }, 3000);
+};
+
+let errorhandler = (response, data) => {
+  if (response.ok) {
+    return data;
+  } else {
+    if (data.detail) {
+      throw new Error(data.detail);
+    } else {
+      console.log(data);
+      throw new Error(response.status + " " + response.statusText);
+    }
+  }
+};
+
 // Logic
-registerBtn.addEventListener("click", (e) => {
-  fetch(BASE_URL + "/user/register", {
-    method: "POST",
-    body: new FormData(registerForm),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-
-      registerForm.reset();
-      messageBox.innerHTML = "Register Successful!";
-      setTimeout(() => {
-        messageBox.innerHTML = "";
-      }, 3000);
+registerBtn.addEventListener("click", async (e) => {
+  try {
+    let response = await fetch(BASE_URL + "/user/register", {
+      method: "POST",
+      body: new FormData(registerForm),
     });
+
+    let data = await response.json();
+    await errorhandler(response, data);
+
+    registerForm.reset();
+    messageBoxShow("Register Successful!");
+  } catch (error) {
+    messageBoxShow(error.message);
+  }
 });
 
-loginBtn.addEventListener("click", (e) => {
-  fetch(BASE_URL + "/user/login", {
-    method: "POST",
-    body: new FormData(loginForm),
-    credentials: "include",
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-
-      CURRENT_USER_ID = data.data.id;
-
-      loginForm.reset();
-      messageBox.innerHTML = "Login Successful!";
-      setTimeout(() => {
-        messageBox.innerHTML = "";
-      }, 3000);
+loginBtn.addEventListener("click", async (e) => {
+  try {
+    let response = await fetch(BASE_URL + "/user/login", {
+      method: "POST",
+      body: new FormData(loginForm),
+      credentials: "include",
     });
+
+    let data = await response.json();
+    await errorhandler(response, data);
+
+    CURRENT_USER_ID = data.data.id;
+    loginForm.reset();
+    messageBoxShow("Login Successful!");
+  } catch (error) {
+    messageBoxShow(error.message);
+  }
 });
 
-viewUserInfoBtn.addEventListener("click", (e) => {
-  fetch(BASE_URL + "/user/user", {
-    method: "GET",
-    credentials: "include",
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-
-      const { elements } = userInfoForm;
-      for (const [key, value] of Object.entries(data.data)) {
-        const field = elements.namedItem(key);
-        field && (field.value = value);
-      }
-
-      messageBox.innerHTML = "Fetched User Info!";
-      setTimeout(() => {
-        messageBox.innerHTML = "";
-      }, 3000);
+logoutBtn.addEventListener("click", async (e) => {
+  try {
+    let response = await fetch(BASE_URL + "/user/logout", {
+      method: "POST",
+      credentials: "include",
     });
+
+    let data = await response.json();
+    await errorhandler(response, data);
+
+    CURRENT_USER_ID = undefined;
+    messageBoxShow("Logged Out!");
+  } catch (error) {
+    messageBoxShow(error.message);
+  }
 });
 
-viewAllUsersBtn.addEventListener("click", (e) => {
-  fetch(BASE_URL + "/user/users", {
-    method: "GET",
-    credentials: "include",
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
+viewUserInfoBtn.addEventListener("click", async (e) => {
+  try {
+    let response = await fetch(BASE_URL + "/user/user", {
+      method: "GET",
+      credentials: "include",
+    });
 
-      for (const item of data.data) {
-        let tableRow = document.createElement("tr");
-        tableRow.innerHTML = `
+    let data = await response.json();
+    await errorhandler(response, data);
+
+    const { elements } = userInfoForm;
+    for (const [key, value] of Object.entries(data.data)) {
+      const field = elements.namedItem(key);
+      field && (field.value = value);
+    }
+
+    messageBoxShow("Fetched User Info!");
+  } catch (error) {
+    messageBoxShow(error.message + ", maybe Login First!");
+  }
+});
+
+viewAllUsersBtn.addEventListener("click", async (e) => {
+  try {
+    let response = await fetch(BASE_URL + "/user/users", {
+      method: "GET",
+      credentials: "include",
+    });
+
+    let data = await response.json();
+    await errorhandler(response, data);
+
+    allUsersTableBody.innerHTML = "";
+    for (const item of data.data) {
+      let tableRow = document.createElement("tr");
+      tableRow.innerHTML = `
           <th scope="row">${item.id}</th>
           <td>${item.email}</td>
           <td>${item.first_name}</td>
@@ -101,67 +138,51 @@ viewAllUsersBtn.addEventListener("click", (e) => {
           <td>${item.phone_number}</td>
           <td>${item.gender}</td>
       `;
-        allUsersTableBody.appendChild(tableRow);
-      }
+      allUsersTableBody.appendChild(tableRow);
+    }
 
-      messageBox.innerHTML = "Fetched All Users!";
-      setTimeout(() => {
-        messageBox.innerHTML = "";
-      }, 3000);
-    });
+    messageBoxShow("Fetched All Users!");
+  } catch (error) {
+    messageBoxShow(error.message + ", maybe Login First!");
+  }
 });
 
-logoutBtn.addEventListener("click", (e) => {
-  fetch(BASE_URL + "/user/logout", {
-    method: "POST",
-    credentials: "include",
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-
-      CURRENT_USER_ID = undefined;
-
-      messageBox.innerHTML = "Logged Out!";
-      setTimeout(() => {
-        messageBox.innerHTML = "";
-      }, 3000);
+editBtn.addEventListener("click", async (e) => {
+  try {
+    let response = await fetch(BASE_URL + "/user/user", {
+      method: "GET",
+      credentials: "include",
     });
+
+    let data = await response.json();
+    await errorhandler(response, data);
+
+    CURRENT_USER_ID = data.data.id;
+
+    const { elements } = editForm;
+    for (const [key, value] of Object.entries(data.data)) {
+      const field = elements.namedItem(key);
+      field && (field.value = value);
+    }
+  } catch (error) {
+    messageBoxShow(error.message + ", maybe Login First!");
+  }
 });
 
-editBtn.addEventListener("click", (e) => {
-  fetch(BASE_URL + "/user/user", {
-    method: "GET",
-    credentials: "include",
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-
-      CURRENT_USER_ID = data.data.id;
-
-      const { elements } = editForm;
-      for (const [key, value] of Object.entries(data.data)) {
-        const field = elements.namedItem(key);
-        field && (field.value = value);
-      }
+formEditBtn.addEventListener("click", async (e) => {
+  try {
+    let response = await fetch(BASE_URL + "/user/update/" + CURRENT_USER_ID, {
+      method: "PUT",
+      body: new FormData(editForm),
+      credentials: "include",
     });
-});
 
-formEditBtn.addEventListener("click", (e) => {
-  fetch(BASE_URL + "/user/update/" + CURRENT_USER_ID, {
-    method: "PUT",
-    body: new FormData(editForm),
-    credentials: "include",
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
+    let data = await response.json();
+    await errorhandler(response, data);
 
-      editForm.reset();
-      messageBox.innerHTML = "Edit Successful!";
-      setTimeout(() => {
-        messageBox.innerHTML = "";
-      }, 3000);
-    });
+    editForm.reset();
+    messageBoxShow("Edit Successful!");
+  } catch (error) {
+    messageBoxShow(error.message);
+  }
 });

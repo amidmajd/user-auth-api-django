@@ -28,7 +28,7 @@ class LoginView(APIView):
         try:
             return User.objects.get(email=email)
         except User.DoesNotExist:
-            raise Http404
+            raise AuthenticationFailed('User not found!')
 
     def post(self, request):
         email = request.data['email']
@@ -36,8 +36,6 @@ class LoginView(APIView):
 
         user = self.get_object(email)
 
-        if user is None:
-            raise AuthenticationFailed('User not found!')
         if not user.check_password(password):
             raise AuthenticationFailed('Incorrect password!')
 
