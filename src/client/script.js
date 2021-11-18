@@ -143,6 +143,7 @@ navLogoutBtn.addEventListener("click", async (e) => {
 
     deActivateAllSections();
     deActivateAllNavBtns();
+    ALL_SECTION_NAMES["section-home"].classList.add("section-active");
 
     messageBoxShow("Logged Out!");
   } catch (error) {
@@ -257,7 +258,6 @@ editBtn.addEventListener("click", async (e) => {
     let data = await response.json();
     await errorhandler(response, data);
 
-    editForm.reset();
     messageBoxShow("Edit Successful!");
   } catch (error) {
     messageBoxShow(error.message);
