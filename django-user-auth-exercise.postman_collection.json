@@ -1,0 +1,294 @@
+{
+	"info": {
+		"_postman_id": "c0254078-8edb-46b4-bdc8-da2eb1320db4",
+		"name": "django-user-auth-exercise",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "amidmajd4@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "amidmajd",
+							"type": "text"
+						},
+						{
+							"key": "first_name",
+							"value": "amid",
+							"type": "text"
+						},
+						{
+							"key": "last_name",
+							"value": "majd",
+							"type": "text"
+						},
+						{
+							"key": "birthday",
+							"value": "1997-07-02",
+							"type": "text"
+						},
+						{
+							"key": "phone_number",
+							"value": "09115911987",
+							"type": "text"
+						},
+						{
+							"key": "address",
+							"value": "Iran, Tehran, Niro Havai",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "Male",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/user/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "jwt={{jwt_token}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "amidmajd@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "amidmajd",
+							"type": "text"
+						},
+						{
+							"key": "first_name",
+							"value": "amid222",
+							"type": "text"
+						},
+						{
+							"key": "last_name",
+							"value": "majd222",
+							"type": "text"
+						},
+						{
+							"key": "birthday",
+							"value": "1997-07-02",
+							"type": "text"
+						},
+						{
+							"key": "phone_number",
+							"value": "09115911987",
+							"type": "text"
+						},
+						{
+							"key": "address",
+							"value": "Iran, Tehran, Niro Havai",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "Male",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/user/update/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"user",
+						"update",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "amidmajd4@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "amidmajd",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/user/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "amidmajd@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "amidmajd",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/user/logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"user",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "jwt={{jwt_token}}",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/user/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"user",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Users",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "jwt={{jwt_token}}",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/user/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"user",
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "jwt_token",
+			"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTIsImV4cCI6MTY0Nzk3NzY4MywiaWF0IjoxNjQ3OTU2MDgzfQ.i8_kqp2bbI-7K-cq3GoYgnsp5D2FvH303w3dXR1xljc; HttpOnly; Path=/; SameSite=None; Secure"
+		}
+	]
+}
