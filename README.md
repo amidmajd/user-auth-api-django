@@ -1,1 +1,1 @@
-Small Django User Authentication Uni Project
+Django User Authentication API Uni Project
