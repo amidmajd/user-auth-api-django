@@ -1,1 +1,1 @@
-Django User Authentication API Uni Project
+Django User Authentication Project (using Django APIs)
